@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/User.model";
+import bcrypt from "bcrypt"
+import * as JWT from "jsonwebtoken"
+import { getJWTtoken } from "../middleware/userAuth";
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,8 +16,22 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
-    await User.create(payload);
-    return res.status(201).json({ message: "User created successfully!" });
+    if (!req.body.username) {
+      throw new Error("Username is mandatory");
+    }
+    if (!req.body.password) {
+      throw new Error("Password is mandatory")
+    }
+    const { password } = req.body
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = {
+      ...req.body,
+      password: passwordHash
+    }
+    const savedUSer = await User.create(user);
+    const jwtToken = await getJWTtoken(savedUSer)
+    res.cookie("token", jwtToken)
+    return res.status(201).json({ message: "User Added successfully!", data: savedUSer });
   } catch (err) {
     next(err);
   }
