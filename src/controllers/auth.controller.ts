@@ -7,14 +7,14 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     try {
         const { username, password } = req.body
         const user = await UserModel.findOne({ username: username })
-        console.log(user)
         if (!user) {
-            throw new Error("User not found")
+            const error = new Error("User not found")
+            return next(error)
         }
         const isValidPassword = await bcrypt.compare(password, user.password)
-        console.log(password, user.password)
         if (!isValidPassword) {
-            throw new Error("Invalid Password")
+            const error = new Error("Invalid Credentials")
+            return next(error)
         }
         const jwtToken = await getJWTtoken(user);
         res.cookie("token", jwtToken);
