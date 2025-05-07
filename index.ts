@@ -6,13 +6,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser  from "cookie-parser"
 dotenv.config()
-interface CustomError extends Error {
-  statusCode?: number;
-}
-
 // route handlers
 import auth_router from "./src/routes/auth.route";
 import user_route from "./src/routes/user.route";
+import { CustomError } from "./src/Interfaces/errorInterface";
+import { ROLES } from "./src/Interfaces/roles.enum";
+import roles_router from "./src/routes/roles.route";
 // utils
 app.use(json());
 app.use(urlencoded());
@@ -22,7 +21,7 @@ app.use(cookieParser())
 // Route mappings
 app.use("/api/users", user_route);
 app.use("/api/user",auth_router)
-
+app.use("/api/roles",roles_router)
 
 // Middleware to handle invalid routes (404)
 app.use((req: Request, res: Response, next: NextFunction) => {

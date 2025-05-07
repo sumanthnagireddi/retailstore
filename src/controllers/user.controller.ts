@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/User.model";
 import bcrypt from "bcrypt"
-import * as JWT from "jsonwebtoken"
 import { getJWTtoken } from "../middleware/userAuth";
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
