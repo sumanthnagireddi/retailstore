@@ -3,7 +3,7 @@ import { createRole, getRoles , deleteRole } from "../controllers/roles.controll
 import { userAuth } from "../middleware/userAuth";
 const roles_router = express.Router();
 
-roles_router.get("/",userAuth,getRoles);
+roles_router.get("/",getRoles);
 roles_router.post("/",createRole)
 roles_router.delete("/:id",deleteRole)
 
