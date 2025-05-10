@@ -88,7 +88,7 @@ export const getPaymentStatus = async (req: Request, res: Response, next: NextFu
             res.status(400).json({ message: "Order ID is required." });
         }
 
-        const order = await orderModel.findById( order_id );
+        const order = await orderModel.findById(order_id);
 
         if (!order) {
             res.status(404).json({ message: "Order not found." });
@@ -115,11 +115,11 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
         const { orderStatus } = req.body;
 
         if (!order_id) {
-             res.status(400).json({ message: "Order ID is required." });
+            res.status(400).json({ message: "Order ID is required." });
         }
 
         if (!orderStatus) {
-             res.status(400).json({ message: "Status is required to update the order." });
+            res.status(400).json({ message: "Status is required to update the order." });
         }
 
         const updatedOrder = await orderModel.findByIdAndUpdate(
@@ -129,7 +129,105 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
         );
 
         if (!updatedOrder) {
-             res.status(404).json({ message: "Order not found." });
+            res.status(404).json({ message: "Order not found." });
+        }
+
+        res.status(200).json({
+            message: "Order status updated successfully!",
+            data: updatedOrder,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const order_id = req.params.id;
+        const { orderStatus } = req.body;
+
+        if (!order_id) {
+            res.status(400).json({ message: "Order ID is required." });
+        }
+
+        if (!orderStatus) {
+            res.status(400).json({ message: "Status is required to update the order." });
+        }
+
+        const updatedOrder = await orderModel.findByIdAndUpdate(
+            order_id,
+            { orderStatus },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            res.status(404).json({ message: "Order not found." });
+        }
+
+        res.status(200).json({
+            message: "Order status updated successfully!",
+            data: updatedOrder,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const adminCancelOrder = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const order_id = req.params.id;
+        const { orderStatus } = req.body;
+
+        if (!order_id) {
+            res.status(400).json({ message: "Order ID is required." });
+        }
+
+        if (!orderStatus) {
+            res.status(400).json({ message: "Status is required to update the order." });
+        }
+
+        const updatedOrder = await orderModel.findByIdAndUpdate(
+            order_id,
+            { orderStatus },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            res.status(404).json({ message: "Order not found." });
+        }
+
+        res.status(200).json({
+            message: "Order status updated successfully!",
+            data: updatedOrder,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const requestReturn = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const order_id = req.params.id;
+        const { orderStatus } = req.body;
+
+        if (!order_id) {
+            res.status(400).json({ message: "Order ID is required." });
+        }
+
+        if (!orderStatus) {
+            res.status(400).json({ message: "Status is required to update the order." });
+        }
+
+        const updatedOrder = await orderModel.findByIdAndUpdate(
+            order_id,
+            { orderStatus },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            res.status(404).json({ message: "Order not found." });
         }
 
         res.status(200).json({

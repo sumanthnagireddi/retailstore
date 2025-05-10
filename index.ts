@@ -13,6 +13,7 @@ import { CustomError } from "./src/Interfaces/errorInterface";
 import { ROLES } from "./src/Interfaces/roles.enum";
 import roles_router from "./src/routes/roles.route";
 import orders_router from "./src/routes/order.route";
+import products_router from "./src/routes/products.route";
 // utils
 app.use(json());
 app.use(urlencoded());
@@ -24,6 +25,7 @@ app.use("/api/users", user_route);
 app.use("/api/user",auth_router)
 app.use("/api/roles",roles_router)
 app.use("/api/orders",orders_router)
+app.use("/api/products",products_router)
 
 // Middleware to handle invalid routes (404)
 app.use((req: Request, res: Response, next: NextFunction) => {
