@@ -10,13 +10,15 @@ export interface IProduct extends Document {
   price: number;
   discountPrice?: number;
   stock: number;
-  sku: string;
   images: string[];
   tags: string[];
   attributes?: {
     color?: string;
+    features?: string[];
+    screenSize?: string;
+    resolution?: string;
     size?: string;
-    [key: string]: string | undefined;
+    [key: string]: string | string[] | undefined;
   };
   rating: number;
   numReviews: number;
@@ -31,7 +33,7 @@ export interface IProduct extends Document {
 const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, },
     description: { type: String, required: true },
     brand: { type: String, required: true },
     category: { type: String, required: true },
@@ -39,12 +41,12 @@ const productSchema = new Schema<IProduct>(
     price: { type: Number, required: true },
     discountPrice: { type: Number },
     stock: { type: Number, required: true, min: 0 },
-    sku: { type: String, required: true, unique: true },
     images: [{ type: String, required: true }],
     tags: [{ type: String }],
+    
     attributes: {
       type: Map,
-      of: String,
+      of: Schema.Types.Mixed, 
     },
     rating: { type: Number, required: true, default: 0 },
     numReviews: { type: Number, required: true, default: 0 },
@@ -56,4 +58,4 @@ const productSchema = new Schema<IProduct>(
   { timestamps: true }
 );
 
-export default mongoose.model<IProduct>("Product", productSchema);
+export default mongoose.model<IProduct>("Products", productSchema);

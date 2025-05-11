@@ -1,12 +1,11 @@
 import express from "express";
-import { createProduct, getProducts } from "../controllers/products.controller";
+import { createProduct, getProductByCategory, getProductByID, getProducts, updateProductById } from "../controllers/products.controller";
 
 const products_router = express.Router();
 
-products_router.route("/")
-                .get(getProducts)
-                .post(createProduct)
-
+products_router.route("/").get(getProducts).post(createProduct)
+products_router.route("/:product_id").get(getProductByID).put(updateProductById)
+products_router.route("/category/:category_name").get(getProductByCategory)
 export default products_router
 
 
