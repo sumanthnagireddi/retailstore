@@ -21,7 +21,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
         const product_body = req.body
         if (Array.isArray(product_body)) {
             const products = await ProductModel.insertMany(product_body);
-             res.status(201).json({
+            res.status(201).json({
                 message: "Products Created successfully!",
                 data: products,
             });
@@ -31,11 +31,14 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
             message: "Product Created successfully!",
             data: product,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         next(error)
     }
 }
 
+export const handleFileUpload = async (req: Request, res: Response, next: NextFunction) => {
+    
+}
 
 export const getProductByID = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -81,6 +84,26 @@ export const getProductByCategory = async (req: Request, res: Response, next: Ne
     try {
         const { category_name } = req.params
         const products = await ProductModel.find({ category: category_name })
+        if (!products) {
+            res.status(404).json({
+                message: "Product not found!",
+                data: [],
+            })
+        }
+        res.status(200).json({
+            message: "Products Fetched successfully!",
+            data: products,
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export const getProductsByVendor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { vendorId } = req.params
+        const products = await ProductModel.find({ vendor: vendorId })
         if (!products) {
             res.status(404).json({
                 message: "Product not found!",

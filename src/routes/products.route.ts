@@ -1,11 +1,13 @@
 import express from "express";
-import { createProduct, getProductByCategory, getProductByID, getProducts, updateProductById } from "../controllers/products.controller";
+import { createProduct, getProductByCategory, getProductByID, getProductsByVendor, getProducts, updateProductById } from "../controllers/products.controller";
 
 const products_router = express.Router();
 
 products_router.route("/").get(getProducts).post(createProduct)
 products_router.route("/:product_id").get(getProductByID).put(updateProductById)
 products_router.route("/category/:category_name").get(getProductByCategory)
+products_router.route("/vendor/:vendorId").get(getProductsByVendor)
+products_router.route("/search")
 export default products_router
 
 
